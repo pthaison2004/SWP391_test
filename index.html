@@ -121,16 +121,135 @@
         .el-footer-social a { color: #fff; text-decoration: underline; margin: 0 0.5rem; }
         .el-footer-social a:hover { color: #bbdefb; }
         .el-footer-copyright { text-align: center; color: #bbdefb; margin-top: 1.5rem; font-size: 0.98rem; }
-        @media (max-width: 900px) {
-            .el-hero-content, .el-main, .el-footer-content { max-width: 98vw; padding: 1rem; }
-            .el-product-list, .el-why-list, .el-footer-content { flex-direction: column; align-items: center; }
-            .el-hero-right { flex-basis: auto; }
+        /* Chat Box Styles */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            max-height: 500px;
         }
-        @media (max-width: 700px) {
-            .el-hero-content { flex-direction: column; gap: 1.5rem; text-align: center; }
-            .el-hero-slider { width: 90vw; max-width: 320px; height: 180px; }
-            .el-tabs ul { flex-wrap: wrap; }
-            .el-main { padding: 1rem; }
+        
+        .chat-header {
+            background: #1976d2;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .chat-messages {
+            padding: 15px;
+            overflow-y: auto;
+            max-height: 300px;
+            flex-grow: 1;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background: #e3f2fd;
+            color: #333;
+            margin-left: auto;
+            border-top-right-radius: 4px;
+        }
+        
+        .admin-message {
+            background: #f5f5f5;
+            color: #333;
+            margin-right: auto;
+            border-top-left-radius: 4px;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            outline: none;
+        }
+        
+        .chat-send {
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chat-send:hover {
+            background: #1565c0;
+        }
+        
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .chat-button svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .chat-button:hover {
+            background: #1565c0;
+        }
+        
+        @media (max-width: 500px) {
+            .chat-container {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+                bottom: 80px;
+            }
         }
     </style>
 </head>
@@ -210,6 +329,33 @@
             <a href="#" class="el-cta-btn">Liên hệ tư vấn</a>
         </section>
     </main>
+    <!-- Chat Box UI -->
+    <button class="chat-button" id="chatButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+    
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div>Tư vấn trực tuyến</div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message admin-message">
+                Xin chào! Chúng tôi có thể giúp gì cho bạn về sức khỏe học đường?
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Nhập tin nhắn..." />
+            <button class="chat-send" id="chatSend">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
     <footer class="el-footer">
         <div class="el-footer-copyright">
             &copy; 2025 School Medical Management System. All rights reserved.
@@ -224,6 +370,78 @@
             sliderIdx = (sliderIdx + 1) % sliderImgs.length;
             sliderImgs[sliderIdx].classList.add('active');
         }, 3500);
+        
+        // Chat Box Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chatButton');
+            const chatContainer = document.getElementById('chatContainer');
+            const chatClose = document.getElementById('chatClose');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            const chatMessages = document.getElementById('chatMessages');
+            const ctaButton = document.querySelector('.el-cta-btn');
+            
+            // Auto responses for the chat
+            const autoResponses = [
+                "Cảm ơn câu hỏi của bạn. Chuyên viên tư vấn của chúng tôi sẽ phản hồi trong ít phút.",
+                "Bạn có thể cho biết thêm về vấn đề bạn đang gặp phải không?",
+                "Chúng tôi có nhiều tài liệu về sức khỏe học đường, bạn quan tâm đến chủ đề nào cụ thể?",
+                "Để được tư vấn chi tiết hơn, vui lòng để lại số điện thoại hoặc email.",
+                "Trung tâm Y tế của chúng tôi mở cửa từ 7:30 - 17:00 các ngày trong tuần. Bạn có thể ghé thăm bất cứ lúc nào."
+            ];
+            
+            // Function to show chat box
+            function showChat() {
+                chatContainer.style.display = 'flex';
+                chatButton.style.display = 'none';
+            }
+            
+            // Function to hide chat box
+            function hideChat() {
+                chatContainer.style.display = 'none';
+                chatButton.style.display = 'flex';
+            }
+            
+            // Function to add a message to the chat
+            function addMessage(message, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'admin-message');
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to handle sending a message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = '';
+                    
+                    // Simulate a response after a short delay
+                    setTimeout(() => {
+                        const response = autoResponses[Math.floor(Math.random() * autoResponses.length)];
+                        addMessage(response, false);
+                    }, 1000);
+                }
+            }
+            
+            // Event listeners
+            chatButton.addEventListener('click', showChat);
+            ctaButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                showChat();
+            });
+            chatClose.addEventListener('click', hideChat);
+            
+            chatSend.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
     </script>
 </body>
 </html>
