@@ -590,30 +590,230 @@
         <div class="el-footer-copyright">
             &copy; 2025 School Medical Management System. All rights reserved.
         </div>
-    </footer>
-    <script>
-        // Slider effect for hero
-        const sliderImgs = document.querySelectorAll('.el-slider-img');
-        let sliderIdx = 0;
-        setInterval(() => {
-            sliderImgs.forEach((img, i) => img.classList.remove('active'));
-            sliderIdx = (sliderIdx + 1) % sliderImgs.length;
-            sliderImgs[sliderIdx].classList.add('active');
-        }, 3500);
-
-        // Avatar dropdown
-        const avatarBtn = document.getElementById('avatarBtn');
-        const avatarMenu = document.getElementById('avatarMenu');
-        document.addEventListener('click', function (e) {
-            if (avatarBtn && avatarBtn.contains(e.target)) {
-                avatarMenu.classList.toggle('show');
-            } else if (avatarMenu && !avatarMenu.contains(e.target)) {
-                avatarMenu.classList.remove('show');
-            }
-        });
+    </footer>    <script>
+        // Thêm modal đăng nhập
+        function createLoginModal() {
+            const modal = document.createElement('div');
+            modal.classList.add('login-modal');
+            modal.innerHTML = `
+                <div class="login-modal-content">
+                    <div class="login-modal-header">
+                        <h3>Đăng nhập</h3>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="login-modal-body">
+                        <div class="error-message" id="errorMessageModal" style="display: none;">
+                            Thông tin đăng nhập không chính xác. Vui lòng thử lại!
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="usernameModal">Tên đăng nhập</label>
+                            <input type="text" class="form-input" id="usernameModal" placeholder="Nhập tên đăng nhập hoặc email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="passwordModal">Mật khẩu</label>
+                            <input type="password" class="form-input" id="passwordModal" placeholder="Nhập mật khẩu" required>
+                        </div>
+                        <button id="loginBtnModal" class="login-btn-modal">Đăng nhập</button>
+                        <div class="login-footer-modal">
+                            <a href="register.html">Đăng ký mới</a> | <a href="#" id="forgotPassModal">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Xử lý đóng modal
+            const closeBtn = modal.querySelector('.close-modal');
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+            
+            // Đóng khi click ngoài modal
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+            
+            // Xử lý đăng nhập từ modal
+            const loginBtn = modal.querySelector('#loginBtnModal');
+            loginBtn.onclick = function() {
+                const username = document.getElementById('usernameModal').value;
+                const password = document.getElementById('passwordModal').value;
+                const errorMsg = document.getElementById('errorMessageModal');
+                
+                // Thông tin đăng nhập mới
+                if (username === 'user' && password === 'password') {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    modal.style.display = 'none';
+                    location.reload();
+                } else {
+                    errorMsg.style.display = 'block';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
+                }
+            };
+            
+            return modal;
+        }
         
-        // Chat Box Functionality
+        // CSS cho modal login
+        const style = document.createElement('style');
+        style.textContent = `
+            .login-modal {
+                display: none;
+                position: fixed;
+                z-index: 2000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.6);
+                overflow: auto;
+            }
+            .login-modal-content {
+                background: #fff;
+                border-radius: 10px;
+                margin: 15% auto;
+                padding: 25px;
+                width: 350px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                animation: modalopen 0.3s;
+            }
+            @keyframes modalopen {
+                from {opacity: 0; transform: translateY(-20px);}
+                to {opacity: 1; transform: translateY(0);}
+            }
+            .login-modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .login-modal-header h3 {
+                color: #1976d2;
+                margin: 0;
+            }
+            .close-modal {
+                color: #777;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            .close-modal:hover {
+                color: #000;
+            }
+            .login-modal .form-group {
+                margin-bottom: 15px;
+            }
+            .login-modal .form-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+            }
+            .login-modal .form-input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            .login-btn-modal {
+                width: 100%;
+                background: #1976d2;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+            .login-btn-modal:hover {
+                background: #1565c0;
+            }
+            .login-footer-modal {
+                margin-top: 15px;
+                text-align: center;
+                font-size: 14px;
+            }
+            .login-footer-modal a {
+                color: #1976d2;
+                text-decoration: none;
+            }
+            .login-footer-modal a:hover {
+                text-decoration: underline;
+            }
+            .error-message {
+                background-color: #ffebee;
+                color: #c62828;
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+        `;
+        document.head.appendChild(style);
+        
         document.addEventListener('DOMContentLoaded', function() {
+            // Tạo modal đăng nhập
+            const loginModal = createLoginModal();
+            
+            // Kiểm tra trạng thái đăng nhập từ localStorage
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // Slider effect for hero
+            const sliderImgs = document.querySelectorAll('.el-slider-img');
+            let sliderIdx = 0;
+            setInterval(() => {
+                sliderImgs.forEach((img, i) => img.classList.remove('active'));
+                sliderIdx = (sliderIdx + 1) % sliderImgs.length;
+                sliderImgs[sliderIdx].classList.add('active');
+            }, 3500);            // Avatar dropdown
+            const avatarBtn = document.getElementById('avatarBtn');
+            const avatarMenu = document.getElementById('avatarMenu');
+            document.addEventListener('click', function (e) {
+                if (avatarBtn && avatarBtn.contains(e.target)) {
+                    avatarMenu.classList.toggle('show');
+                } else if (avatarMenu && !avatarMenu.contains(e.target)) {
+                    avatarMenu.classList.remove('show');
+                }
+            });
+            
+            // Kiểm tra đăng nhập khi click vào các chức năng
+            const tabLinks = document.querySelectorAll('.el-tab-link');
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                        // Hiển thị modal đăng nhập nếu chưa đăng nhập
+                        loginModal.style.display = 'block';
+                    } else {
+                        // Xử lý chuyển tab nếu đã đăng nhập
+                        alert('Chuyển đến trang ' + this.textContent);
+                        // Trong thực tế, chúng ta có thể chuyển hướng hoặc tải nội dung tương ứng
+                    }
+                });
+            });
+            
+            // Xử lý đăng xuất
+            const logoutBtn = document.querySelector('.el-dropdown-logout');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Xóa trạng thái đăng nhập
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('username');
+                    
+                    // Chuyển hướng về trang đăng nhập
+                    window.location.href = 'login.html';
+                });
+            }
+            
+            // Chat Box Functionality
             const chatButton = document.getElementById('chatButton');
             const chatContainer = document.getElementById('chatContainer');
             const chatClose = document.getElementById('chatClose');
@@ -669,15 +869,15 @@
             }
             
             // Event listeners
-            chatButton.addEventListener('click', showChat);
-            ctaButton.addEventListener('click', function(e) {
+            if (chatButton) chatButton.addEventListener('click', showChat);
+            if (ctaButton) ctaButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 showChat();
             });
-            chatClose.addEventListener('click', hideChat);
+            if (chatClose) chatClose.addEventListener('click', hideChat);
             
-            chatSend.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keypress', function(e) {
+            if (chatSend) chatSend.addEventListener('click', sendMessage);
+            if (chatInput) chatInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
