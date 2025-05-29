@@ -758,12 +758,10 @@
         document.head.appendChild(style);
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Tạo modal đăng nhập
-            const loginModal = createLoginModal();
-            
-            // Kiểm tra trạng thái đăng nhập từ localStorage
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            
+            // Bỏ kiểm tra đăng nhập khi click vào các chức năng
+            // const loginModal = createLoginModal();
+            // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
             // Slider effect for hero
             const sliderImgs = document.querySelectorAll('.el-slider-img');
             let sliderIdx = 0;
@@ -771,7 +769,8 @@
                 sliderImgs.forEach((img, i) => img.classList.remove('active'));
                 sliderIdx = (sliderIdx + 1) % sliderImgs.length;
                 sliderImgs[sliderIdx].classList.add('active');
-            }, 3500);            // Avatar dropdown
+            }, 3500);
+            // Avatar dropdown
             const avatarBtn = document.getElementById('avatarBtn');
             const avatarMenu = document.getElementById('avatarMenu');
             document.addEventListener('click', function (e) {
@@ -781,34 +780,28 @@
                     avatarMenu.classList.remove('show');
                 }
             });
-            
-            // Kiểm tra đăng nhập khi click vào các chức năng
+
+            // Cho phép chuyển tab không cần đăng nhập
             const tabLinks = document.querySelectorAll('.el-tab-link');
-            tabLinks.forEach(link => {
+            tabLinks.forEach((link, idx) => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (!isLoggedIn) {
-                        // Hiển thị modal đăng nhập nếu chưa đăng nhập
-                        loginModal.style.display = 'block';
+                    if (idx === 0) {
+                        window.location.href = 'healthDeclaration.html';
                     } else {
-                        // Xử lý chuyển tab nếu đã đăng nhập
                         alert('Chuyển đến trang ' + this.textContent);
-                        // Trong thực tế, chúng ta có thể chuyển hướng hoặc tải nội dung tương ứng
+                        // Có thể chuyển hướng hoặc tải nội dung tương ứng ở đây
                     }
                 });
             });
-            
+
             // Xử lý đăng xuất
             const logoutBtn = document.querySelector('.el-dropdown-logout');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
-                    // Xóa trạng thái đăng nhập
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('username');
-                    
-                    // Chuyển hướng về trang đăng nhập
                     window.location.href = 'login.html';
                 });
             }
