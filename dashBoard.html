@@ -854,17 +854,49 @@
             }
             
             // Function to handle sending a message
-            function sendMessage() {
+            async function sendMessage() {
                 const message = chatInput.value.trim();
                 if (message) {
                     addMessage(message, true);
                     chatInput.value = '';
-                    
-                    // Simulate a response after a short delay
-                    setTimeout(() => {
-                        const response = autoResponses[Math.floor(Math.random() * autoResponses.length)];
-                        addMessage(response, false);
-                    }, 1000);
+                    // Hiển thị trạng thái đang trả lời
+                    addMessage('Đang trả lời...', false);
+                    try {
+                        // Gọi OpenAI API (DEMO, không để lộ API key thật trên client)
+                        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
+                            },
+                            body: JSON.stringify({
+                                model: 'gpt-3.5-turbo',
+                                messages: [
+                                    { role: 'system', content: 'Bạn là chuyên gia tư vấn sức khỏe học đường, trả lời ngắn gọn, dễ hiểu.' },
+                                    { role: 'user', content: message }
+                                ],
+                                max_tokens: 200
+                            })
+                        });
+                        const data = await response.json();
+                        // Xóa "Đang trả lời..."
+                        const lastMsg = chatMessages.querySelector('.admin-message:last-child');
+                        if (lastMsg && lastMsg.textContent === 'Đang trả lời...') {
+                            lastMsg.remove();
+                        }
+                        if (data.choices && data.choices[0]) {
+                            addMessage(data.choices[0].message.content.trim(), false);
+                        } else {
+                            addMessage('Xin lỗi, hiện tại không thể trả lời. Vui lòng thử lại sau.', false);
+                        }
+                    } catch (err) {
+                        // Xóa "Đang trả lời..."
+                        const lastMsg = chatMessages.querySelector('.admin-message:last-child');
+                        if (lastMsg && lastMsg.textContent === 'Đang trả lời...') {
+                            lastMsg.remove();
+                        }
+                        addMessage('Có lỗi xảy ra khi kết nối tới hệ thống tư vấn.', false);
+                    }
                 }
             }
             
