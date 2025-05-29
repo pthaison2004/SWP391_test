@@ -768,10 +768,24 @@
                 sliderImgs.forEach((img, i) => img.classList.remove('active'));
                 sliderIdx = (sliderIdx + 1) % sliderImgs.length;
                 sliderImgs[sliderIdx].classList.add('active');
-            }, 3500);            // Avatar dropdown
+            }, 3500);            // Hiển thị menu avatar khi đã đăng nhập
+            const avatarMenu = document.getElementById('avatarMenu');
+            if (isLoggedIn) {
+                avatarMenu.innerHTML = `
+                    <div class="el-dropdown-item">Xin chào, ${localStorage.getItem('username') || 'User'}</div>
+                    <div class="el-dropdown-item el-dropdown-logout">Đăng xuất</div>
+                `;
+            } else {
+                avatarMenu.innerHTML = '';
+            }
+            // Avatar dropdown
             const avatarBtn = document.getElementById('avatarBtn');
             document.addEventListener('click', function (e) {
                 if (avatarBtn && avatarBtn.contains(e.target)) {
+                    if (!isLoggedIn) {
+                        loginModal.style.display = 'block';
+                        return;
+                    }
                     avatarMenu.classList.toggle('show');
                 } else if (avatarMenu && !avatarMenu.contains(e.target)) {
                     avatarMenu.classList.remove('show');
@@ -808,7 +822,7 @@
                     e.preventDefault();
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('username');
-                    window.location.href = 'login.html';
+                    window.location.href = 'dashBoard.html';
                 });
             }
             
