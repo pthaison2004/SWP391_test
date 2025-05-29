@@ -482,15 +482,12 @@
             <li><a href="#" class="el-tab-link">Quản lý quá trình tiêm chủng</a></li>
             <li><a href="#" class="el-tab-link">Quản lý quá trình kiểm tra y tế định kỳ</a></li>
         </ul>
-    </nav>
-    <!-- Avatar Dropdown (moved below tab) -->
+    </nav>    <!-- Avatar Dropdown (moved below tab) -->
     <div class="el-avatar-dropdown el-avatar-below-tab">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar" class="el-avatar-icon"
             id="avatarBtn">
         <div class="el-dropdown-menu" id="avatarMenu">
-            <a href="#" class="el-dropdown-item">Hồ sơ</a>
-            <a href="#" class="el-dropdown-item">Cài đặt</a>
-            <a href="#" class="el-dropdown-item el-dropdown-logout">Đăng xuất</a>
+            <!-- Menu items will be dynamically set based on login state -->
         </div>
     </div>
     <main class="el-main">
@@ -756,13 +753,49 @@
             }
         `;
         document.head.appendChild(style);
-        
-        document.addEventListener('DOMContentLoaded', function() {
+          document.addEventListener('DOMContentLoaded', function() {
             // Tạo modal đăng nhập
             const loginModal = createLoginModal();
             
             // Kiểm tra trạng thái đăng nhập từ localStorage
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // Thiết lập menu dropdown dựa trên trạng thái đăng nhập
+            const avatarMenu = document.getElementById('avatarMenu');
+            if (isLoggedIn) {
+                // Nếu đã đăng nhập, hiển thị các tùy chọn đầy đủ
+                avatarMenu.innerHTML = `
+                    <a href="#" class="el-dropdown-item">Hồ sơ</a>
+                    <a href="#" class="el-dropdown-item">Cài đặt</a>
+                    <a href="#" class="el-dropdown-item el-dropdown-logout">Đăng xuất</a>
+                `;
+                
+                // Xử lý đăng xuất
+                const logoutBtn = avatarMenu.querySelector('.el-dropdown-logout');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('username');
+                        location.reload();
+                    });
+                }
+            } else {
+                // Nếu chưa đăng nhập, chỉ hiển thị tùy chọn đăng nhập
+                avatarMenu.innerHTML = `
+                    <a href="#" class="el-dropdown-item el-dropdown-login">Đăng nhập</a>
+                    <a href="register.html" class="el-dropdown-item">Đăng ký</a>
+                `;
+                
+                // Xử lý đăng nhập
+                const loginBtn = avatarMenu.querySelector('.el-dropdown-login');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        loginModal.style.display = 'block';
+                    });
+                }
+            }
             
             // Slider effect for hero
             const sliderImgs = document.querySelectorAll('.el-slider-img');
@@ -771,9 +804,10 @@
                 sliderImgs.forEach((img, i) => img.classList.remove('active'));
                 sliderIdx = (sliderIdx + 1) % sliderImgs.length;
                 sliderImgs[sliderIdx].classList.add('active');
-            }, 3500);            // Avatar dropdown
+            }, 3500);
+            
+            // Avatar dropdown
             const avatarBtn = document.getElementById('avatarBtn');
-            const avatarMenu = document.getElementById('avatarMenu');
             document.addEventListener('click', function (e) {
                 if (avatarBtn && avatarBtn.contains(e.target)) {
                     avatarMenu.classList.toggle('show');
