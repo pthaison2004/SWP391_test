@@ -482,15 +482,12 @@
             <li><a href="#" class="el-tab-link">Quản lý quá trình tiêm chủng</a></li>
             <li><a href="#" class="el-tab-link">Quản lý quá trình kiểm tra y tế định kỳ</a></li>
         </ul>
-    </nav>
-    <!-- Avatar Dropdown (moved below tab) -->
+    </nav>    <!-- Avatar Dropdown (moved below tab) -->
     <div class="el-avatar-dropdown el-avatar-below-tab">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar" class="el-avatar-icon"
             id="avatarBtn">
         <div class="el-dropdown-menu" id="avatarMenu">
-            <a href="#" class="el-dropdown-item">Hồ sơ</a>
-            <a href="#" class="el-dropdown-item">Cài đặt</a>
-            <a href="#" class="el-dropdown-item el-dropdown-logout">Đăng xuất</a>
+            <!-- Menu items will be dynamically set based on login state -->
         </div>
     </div>
     <main class="el-main">
@@ -758,10 +755,12 @@
         document.head.appendChild(style);
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Bỏ kiểm tra đăng nhập khi click vào các chức năng
-            // const loginModal = createLoginModal();
-            // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
+            // Tạo modal đăng nhập
+            const loginModal = createLoginModal();
+            
+            // Kiểm tra trạng thái đăng nhập từ localStorage
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
             // Slider effect for hero
             const sliderImgs = document.querySelectorAll('.el-slider-img');
             let sliderIdx = 0;
@@ -769,10 +768,8 @@
                 sliderImgs.forEach((img, i) => img.classList.remove('active'));
                 sliderIdx = (sliderIdx + 1) % sliderImgs.length;
                 sliderImgs[sliderIdx].classList.add('active');
-            }, 3500);
-            // Avatar dropdown
+            }, 3500);            // Avatar dropdown
             const avatarBtn = document.getElementById('avatarBtn');
-            const avatarMenu = document.getElementById('avatarMenu');
             document.addEventListener('click', function (e) {
                 if (avatarBtn && avatarBtn.contains(e.target)) {
                     avatarMenu.classList.toggle('show');
@@ -786,6 +783,10 @@
             tabLinks.forEach((link, idx) => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    if (!isLoggedIn) {
+                        loginModal.style.display = 'block';
+                        return;
+                    }
                     if (idx === 0) {
                         window.location.href = 'healthDeclaration.html';
                     } else if (idx === 1) {
