@@ -788,9 +788,14 @@
                     e.preventDefault();
                     if (idx === 0) {
                         window.location.href = 'healthDeclaration.html';
-                    } else {
-                        alert('Chuyển đến trang ' + this.textContent);
-                        // Có thể chuyển hướng hoặc tải nội dung tương ứng ở đây
+                    } else if (idx === 1) {
+                        window.location.href = 'sendmedicine.html';
+                    } else if (idx === 2) {
+                        window.location.href = 'recordProcess.html';
+                    } else if (idx === 3) {
+                        window.location.href = 'vaccinationManagement.html';
+                    } else if (idx === 4) {
+                        window.location.href = 'healthcheckMmanagement.html';
                     }
                 });
             });
