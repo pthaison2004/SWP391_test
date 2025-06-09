@@ -819,33 +819,58 @@
 
 <body>
     <header class="el-hero">
-        <div class="el-hero-content">
-            <div class="el-hero-left">
+        <div class="el-hero-content">            <div class="el-hero-left">
+                <!-- Modern Health Connect Logo -->
                 <div style="
-                    display: inline-block;
-                    padding: 0.5rem 2.5rem;
-                    border-radius: 2.5rem;
-                    background: linear-gradient(90deg, #56b0ef 0%, #82b5df 70%, rgba(227,242,253,0) 100%);
-                    box-shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.13), 0 1px 0 #fff;
-                    margin-bottom: 0.5rem;
-                    border: 2px solid #bbdefb;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    margin-bottom: 1.5rem;
                 ">
-                    <h1 class="el-hero-title" style="
-                        font-size: 3.2rem;
-                        font-weight: 900;
-                        background: linear-gradient(90deg, #1976d2 30%, #42a5f5 70%, #00e5ff 100%);
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        background-clip: text;
-                        letter-spacing: 2px;
-                        text-shadow: 0 4px 24px rgba(25, 118, 210, 0.18), 0 1px 0 #fff;
+                    <!-- Ultra Modern Logo Text -->
+                    <h1 style="
                         margin: 0;
-                        display: block;
-                        text-align: center;
-                    ">
-                        Health Connect
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+                        font-size: 3.5rem;
+                        font-weight: 100;
+                        color: #fff;
+                        letter-spacing: -1.5px;
+                        position: relative;
+                        line-height: 1;
+                        display: flex;
+                        align-items: baseline;
+                        gap: 0;
+                    ">                        <span style="
+                            font-weight: 100;
+                            font-size: 1em;
+                            color: rgba(255,255,255,0.95);
+                            margin-right: 0;                        ">Health</span><span style="
+                            font-weight: 800;
+                            font-size: 1em;
+                            color: #ffffff;
+                            position: relative;
+                            margin-left: 0;
+                        ">Connect
+                            <span style="
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+                                animation: shimmer 3s ease-in-out infinite;
+                            "></span>
+                        </span>
                     </h1>
                 </div>
+                
+                <!-- CSS Animation for shimmer effect -->
+                <style>
+                    @keyframes shimmer {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(100%); }
+                    }
+                </style>
             </div>
             <div class="el-hero-right">
                 <div class="el-hero-slider">
