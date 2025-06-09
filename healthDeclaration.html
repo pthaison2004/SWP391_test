@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             margin: 0;
             padding: 0;
         }
+
         .el-main {
             max-width: 600px;
             margin: 2rem auto;
@@ -20,22 +22,28 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             padding: 2rem;
         }
+
         .el-section-title {
             font-size: 1.6rem;
             color: #1976d2;
             margin-bottom: 1.5rem;
             text-align: center;
         }
+
         .health-form-group {
             margin-bottom: 1.2rem;
         }
+
         .health-form-label {
             display: block;
             color: #333;
             font-weight: 500;
             margin-bottom: 0.5rem;
         }
-        .health-form-input, .health-form-select, .health-form-textarea {
+
+        .health-form-input,
+        .health-form-select,
+        .health-form-textarea {
             width: 100%;
             padding: 0.8rem;
             border: 1px solid #ddd;
@@ -44,10 +52,14 @@
             box-sizing: border-box;
             transition: border-color 0.2s;
         }
-        .health-form-input:focus, .health-form-select:focus, .health-form-textarea:focus {
+
+        .health-form-input:focus,
+        .health-form-select:focus,
+        .health-form-textarea:focus {
             outline: none;
             border-color: #1976d2;
         }
+
         .health-form-btn {
             width: 100%;
             background: #1976d2;
@@ -61,64 +73,38 @@
             transition: background 0.2s;
             margin-top: 1rem;
         }
+
         .health-form-btn:hover {
             background: #1565c0;
         }
-        .success-message, .error-message {
+
+        .success-message,
+        .error-message {
             display: none;
             padding: 1rem;
             border-radius: 6px;
             margin-bottom: 1.2rem;
         }
+
         .success-message {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
+
         .error-message {
             background-color: #ffebee;
             color: #c62828;
         }
     </style>
 </head>
+
 <body>
     <main class="el-main">
         <h2 class="el-section-title">Khai báo hồ sơ sức khỏe học sinh</h2>
         <div class="success-message" id="successMessage">Khai báo thành công!</div>
         <div class="error-message" id="errorMessage">Có lỗi xảy ra, vui lòng kiểm tra lại thông tin!</div>
+        <!-- ...existing code... -->
         <form id="healthForm">
-            <div class="health-form-group">
-                <label class="health-form-label" for="studentName">Họ và tên học sinh</label>
-                <input type="text" class="health-form-input" id="studentName" required>
-            </div>
-            <div class="health-form-group">
-                <label class="health-form-label" for="dob">Ngày sinh</label>
-                <input type="date" class="health-form-input" id="dob" required>
-            </div>
-            <div class="health-form-group">
-                <label class="health-form-label" for="class">Lớp</label>
-                <select class="health-form-select" id="class" required>
-                    <option value="">-- Chọn lớp --</option>
-                    <option value="1A">1A</option>
-                    <option value="1B">1B</option>
-                    <option value="2A">2A</option>
-                    <option value="2B">2B</option>
-                    <option value="3A">3A</option>
-                    <option value="3B">3B</option>
-                    <option value="4A">4A</option>
-                    <option value="4B">4B</option>
-                    <option value="5A">5A</option>
-                    <option value="5B">5B</option>
-                </select>
-            </div>
-            <div class="health-form-group">
-                <label class="health-form-label" for="gender">Giới tính</label>
-                <select class="health-form-select" id="gender" required>
-                    <option value="" disabled selected>Chọn giới tính</option>
-                    <option value="Nam">Nam</option>
-                    <option value="Nữ">Nữ</option>
-                    <option value="Khác">Khác</option>
-                </select>
-            </div>
             <div class="health-form-group">
                 <label class="health-form-label" for="disease">Bệnh nền (nếu có)</label>
                 <input type="text" class="health-form-input" id="disease" placeholder="Không có thì để trống">
@@ -141,6 +127,7 @@
             </div>
             <button type="submit" class="health-form-btn">Gửi khai báo</button>
         </form>
+        <!-- ...existing code... -->
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -151,23 +138,12 @@
                 e.preventDefault();
                 // Lấy dữ liệu từ form
                 const data = {
-                    studentName: document.getElementById('studentName').value.trim(),
-                    dob: document.getElementById('dob').value,
-                    class: document.getElementById('class').value.trim(),
-                    gender: document.getElementById('gender').value,
                     disease: document.getElementById('disease').value.trim(),
                     allergy: document.getElementById('allergy').value.trim(),
                     height: document.getElementById('height').value,
                     weight: document.getElementById('weight').value,
                     note: document.getElementById('note').value.trim()
                 };
-                // Kiểm tra dữ liệu cơ bản
-                if (!data.studentName || !data.dob || !data.class || !data.gender) {
-                    errorMessage.textContent = 'Vui lòng điền đầy đủ các trường bắt buộc.';
-                    errorMessage.style.display = 'block';
-                    setTimeout(() => { errorMessage.style.display = 'none'; }, 3000);
-                    return;
-                }
                 try {
                     // Lưu vào localStorage (demo)
                     let healthList = JSON.parse(localStorage.getItem('healthDeclarations') || '[]');
@@ -185,4 +161,5 @@
         });
     </script>
 </body>
+
 </html>
